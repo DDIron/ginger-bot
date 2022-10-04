@@ -1,0 +1,16 @@
+{
+  "name": "gingerbot",
+  "version": "2.0.0",
+  "description": "Youtube music bot for discord!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ./src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "discord.js": "^14.4.0"
+  }
+}

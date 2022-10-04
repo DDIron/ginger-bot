@@ -1,0 +1,60 @@
+const { SlashCommandBuilder } = require("discord.js");
+const { joinVoiceChannel, createAudioResource, createAudioPlayer } = require("@discordjs/voice");
+const audioPlayer = createAudioPlayer();
+
+module.exports = {
+	data: new SlashCommandBuilder()
+		.setName("play_file")
+		.setDescription("Play a song via mp3 file.")
+		.addAttachmentOption(option => option
+			.setName("file")
+			.setDescription("Attach a file to play.")
+			.setRequired(true)),
+	async execute(interaction) {
+		await interaction.deferReply()
+		const attachment = interaction.options.getAttachment("file");
+		const currentVc = interaction.member.voice.channel
+
+		if (currentVc) {
+			
+			// join vc
+			const voiceConnection = joinVoiceChannel({
+				channelId: currentVc.id,
+				guildId: interaction.guildId,
+				adapterCreator: interaction.guild.voiceAdapterCreator
+			});
+
+			// play track
+			try {
+				const audioPlayer = createAudioPlayer();
+				const resource = createAudioResource(attachment);
+				audioPlayer.play(resource);
+				audioPlayer.enqueue;
+				voiceConnection.subscribe(audioPlayer);
+			} catch (e) {
+				// error: misc
+				console.log(e)
+				await interaction.editReply(`❌ **Error**\n${e}`);
+				return;
+			}
+		} else {
+			// error: not in channel
+			interaction.editReply({
+				content: "Please rejoin your voice channel before using this command!",
+				ephemeral: true
+			});
+			return;
+		};
+
+		interaction.editReply({
+			content: "",
+			embeds: [
+				{
+					title: `🍪 Playing file:`,
+					description: attachment.name,
+					color: 0xe44424,
+				}
+			],
+		});
+	},
+};
