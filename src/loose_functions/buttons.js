@@ -29,6 +29,7 @@ module.exports = {
                 return;
             });
             audioPlayer.stop();
+            connection.destroy();
             interaction.reply("✅ Music has been stopped.");
         }
     }
