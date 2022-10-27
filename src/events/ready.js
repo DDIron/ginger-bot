@@ -6,7 +6,7 @@ module.exports = {
 	execute(bot) {
 		console.log(`## Ready! Logged in as ${bot.user.tag}`);
         // Set bot status:
-	    bot.user.setActivity("/help || Happy october :)", {
+	    bot.user.setActivity("/help || Now with more!", {
 			type: ActivityType.Listening,
 		});
 	},

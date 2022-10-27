@@ -1,88 +1,85 @@
 const { SlashCommandBuilder } = require("discord.js");
-const {
-	joinVoiceChannel,
-} = require("@discordjs/voice");
+
 const ytdl = require("ytdl-core");
 const ytSearch = require("yt-search");
 const fs = require("fs");
+const { Player } = require("discord-music-player")
 
 module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("play")
-		.setDescription("Play a YouTube video or start the queue.")
+		.setDescription("Add a youtube video or playlist to the queue.")
 		.addStringOption(option => option
 			.setName("input")
-			.setDescription("Provide a search query or youtube url. Plays the queue if left empty.")),
+			.setDescription("Provide a search query or youtube url.")
+			.setRequired(true)),
 	async execute(interaction) {
-		const currentVc =  interaction.member.voice.channel;
 
-		let musicQueues = JSON.parse(fs.readFileSync("./src/gingerDatabase.json"));
-		let currentQueue = musicQueues[interaction.guildId] || [];
-		let searchString;
-		try { // could be neater
-			searchString = interaction.options.getString("input");
-		} catch (e) {
-			searchString = null
-		}
+		const bot = interaction.client
+		const currentVc = interaction.member.voice.channel;
 
-		if (currentVc) {
-			// attempt to retrieve video
-			let youtubeLink;
-
-			try {
-				if (searchString) {
-					if (!searchString.includes("youtube.com")) {
-						results = await ytSearch(searchString);
-						if (!results?.all?.length) {
-							// error: no result
-							interaction.editReply("❌ **Error**\nNo results found. Try using a direct youtube url.");
-							return;
-						}
-						youtubeLink = results.all[0].url;
-					} else {
-						youtubeLink = searchString;
-					}
-				} else if (currentQueue.length){
-					youtubeLink = currentQueue[0];
-					currentQueue.splice(0, 1);
-					musicQueues[interaction.guildId] = currentQueue;
-
-					fs.writeFile("./src/gingerDatabase.json", JSON.stringify(musicQueues, null, 2), function finished(e) {
-						// error: misc
-						if (e) interaction.editReply(`❌ **Error**\n${e.message}`)
-						return;
-					});
-				} else {
-					// error: empty queue
-					interaction.editReply("❌ **Error**\nThe queue is empty!");
-					return;
-				}
-			} catch (e) {
-				// error: misc
-				interaction.editReply(`❌ **Error** ${e}`)
-				return;
-			};
-			let audioDownload;
-			audioDownload = ytdl(youtubeLink, { filter: "audioonly" });
-			
-			// join vc
-			const voiceConnection = joinVoiceChannel({
-				channelId: currentVc.id,
-				guildId: interaction.guildId,
-				adapterCreator: interaction.guild.voiceAdapterCreator
-			});
-
-			// play track
-			const play_track = require("../loose_functions/play_track");
-			await play_track.execute(audioDownload, youtubeLink, voiceConnection, interaction);
-
-		} else {
-			// error: not in channel
-			interaction.editReply({
+		// check for current VC
+		if (!currentVc) {
+			return await interaction.reply({
 				content: "Please rejoin your voice channel before using this command!",
 				ephemeral: true
 			});
-			return;
 		};
+		
+		// get searchstring
+		let searchString;
+		try {
+			searchString = interaction.options.getString("input");
+		} catch (e) {
+		 	searchString = null
+		};
+
+		// attempt to retrieve video
+		interaction.deferReply();
+		let youtubeLink;
+		try {
+			if (searchString.includes("youtube.com")) {
+				//// DIRECT VIDEO
+				youtubeLink = searchString;
+			} else if (searchString.startsWith("https://www.youtube.com/playlist?list=")) {
+				//// PLAYLIST
+				const playlist = await ytpl(commandString.split(`https://www.youtube.com/playlist?list=`).pop())
+				
+				
+			} else {
+				//// SEARCH QUERY
+
+				results = await ytSearch(searchString);
+				if (!results?.all?.length) {
+					// error: no result
+					return await interaction.editReply("❌ **Error**\nNo results found. Try using a direct youtube url.");
+				}
+				youtubeLink = results.all[0].url;
+			}
+		} catch (e) {
+			// error: misc
+			return await interaction.editReply(`❌ **Error**\n${e.message}`);
+		};
+
+		// queue track
+		const play_track = require("../loose_functions/play_track.js");
+		const player = new Player(bot, {
+			leaveOnEmpty: false,
+		});
+		bot.player = player;
+
+		let queue = bot.player.createQueue(interaction.guildId);
+		await queue.join(currentVc);
+
+		try {
+			await play_track.execute(interaction, queue, youtubeLink);
+		} catch (e) {
+			// error: 410
+			return await interaction.editReply({
+				content: "❌ **Error**\nNo video found. Your video might be restricted.",
+				ephemeral: true
+			});
+		}
+		await interaction.editReply("✅ Playing track...")
 	},
 };

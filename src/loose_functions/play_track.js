@@ -1,36 +1,13 @@
-const {
-	createAudioPlayer,
-	createAudioResource,
-	AudioPlayerStatus
-} = require("@discordjs/voice");
+const { Player } = require("discord-music-player");
 
 module.exports = {
-	async execute(audioDownload, youtubeLink, voiceConnection, interaction) {
-        const audioPlayer = createAudioPlayer();
-        const resource = createAudioResource(audioDownload);
-
+	async execute(interaction, queue, youtubeLink) {
+		
         // play track
-        try {
-            audioPlayer.play(resource);
-            audioPlayer.enqueue
-            voiceConnection.subscribe(audioPlayer);
-        } catch (e) {
-            // error: misc
-            await interaction.editReply(`❌ **Error**\n${e}`);
-            return;
-        }
-        
-        // create display
+		await queue.play(youtubeLink);
+
+        // print display
         const print_display = require("./print_display.js");
 		await print_display.execute(interaction, youtubeLink);
-
-        // ON FINISHED PLAYBACK
-        audioPlayer.on(AudioPlayerStatus.Idle, () => {
-            const playNextTrack = require("../commands/play.js");
-            playNextTrack.execute(interaction);
-        });
-
-        
-        return;
-	},
+	}
 };

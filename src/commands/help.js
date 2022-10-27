@@ -10,7 +10,7 @@ module.exports = {
 			embeds: [{
 				type: "rich",
 				title: `🍪 Command Guide`,
-				description: "Ginger v2.0.0",
+				description: "Ginger v3.0.0",
 				color: 0xe44424,
 				fields: [{
 						name: `/help`,
@@ -18,11 +18,11 @@ module.exports = {
 					},
 					{
 						name: `/queue`,
-						value: `- Add a song or playlist to the track queue\n- Displays the track queue when left empty`
+						value: `- Display the track queue`
 					},
 					{
 						name: `/play`,
-						value: `- Play a song via Youtube search or url\n- Plays the track queue when left empty`
+						value: `- Queue a track or playlist via Youtube search or url`
 					},
 					{
 						name: `/remove`,
@@ -34,7 +34,7 @@ module.exports = {
 					},
 					{
 						name: `/display`,
-						value: `- Displays the play panel`
+						value: `- Display the play panel`
 					}
 				],
 				footer: {

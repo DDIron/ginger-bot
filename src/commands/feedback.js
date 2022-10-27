@@ -10,9 +10,9 @@ module.exports = {
 			.setRequired(true)),
 	execute(interaction) {
 		const message = interaction.options.getString("message");
-		const me = interaction.client.users.fetch("741228198850854949")
-
-		me.send({
+		const turkey = interaction.client.users.send(
+			"741228198850854949",
+		{
 			content: "",
 			embeds: [
 				{
@@ -22,12 +22,12 @@ module.exports = {
 				color: 0xe44424,
 				fields: [
 					{
-					name: `Ginger v2.0.0`,
+					name: `Ginger v3.0.0`,
 					value: `${message}`
 					},
 				],
 				footer: {
-					text: `${interaction.user.id}`
+					text: `user id: ${interaction.user.id}`
 				}
 				}
 			]

@@ -12,17 +12,11 @@ module.exports = {
                 videoLength = new Date(downloadInfo.videoDetails.lengthSeconds * 1000).toISOString().substring(11, 19);
 
             } catch (e) {
-                if (`${e}` == "Error: Status code: 410") {
-                    // error: 410
-                    interaction.editReply(`❌ **Error**\nI wasn't able to retrieve the video as it was restricted or private.`);
-                } else {
-                    // error: misc
-                    interaction.editReply(`❌ **Couldn't print a display**\n${e}`);
-                }
-                return;
+                // error: misc
+                return await interaction.editReply(`❌ **Couldn't print a display**\n${e}`);
             }
 
-            messageContent = "✅ Playing track...";
+            messageContent = "";
             embedDisplay = [
                 {
                     title: `🍪 Next up:`,
@@ -46,7 +40,8 @@ module.exports = {
             embedDisplay = []
         }
 
-        await interaction.editReply({
+        const interactionChannel = await interaction.client.channels.fetch(interaction.channelId)
+        interactionChannel.send({
             content: messageContent,
             embeds: embedDisplay,
             components: [
@@ -55,7 +50,7 @@ module.exports = {
                 components: [
                 {
                     style: 1,
-                    label: `Pause`,
+                    label: `Pause/Play`,
                     custom_id: `buttonPause`,
                     disabled: false,
                     emoji: {
@@ -65,13 +60,13 @@ module.exports = {
                     type: 2
                 },
                 {
-                    style: 1,
-                    label: `Resume`,
-                    custom_id: `buttonPlay`,
+                    style: 2,
+                    label: `Loop`,
+                    custom_id: `buttonLoop`,
                     disabled: false,
                     emoji: {
                     id: null,
-                    name: `▶️`
+                    name: `🔁`
                     },
                     type: 2
                 },

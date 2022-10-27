@@ -20,9 +20,8 @@ rest.put(Routes.applicationCommands(botId), { body: commands })
 	.then(() => console.log("Successfully registered global commands."))
 	.catch(console.error);
 
-
-// delete global commands
+// delete all commands
 //
-// rest.put(Routes.applicationCommands(clientId), { body: [] })
-// 	   .then(() => console.log("Successfully deleted all application commands."))
-// 	   .catch(console.error);
+// rest.put(Routes.applicationCommands(botId), { body: [] })
+// .then(() => console.log("Successfully deleted all application commands."))
+// .catch(console.error);
