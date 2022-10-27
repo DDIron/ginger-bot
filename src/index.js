@@ -2,6 +2,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, GatewayIntentBits, } = require("discord.js");
 const { botToken } = require("./config.json");
+const { Player } = require("discord-music-player");
 
 // put receiving endpoints in here:
 const bot = new Client({intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildVoiceStates]});
@@ -30,6 +31,20 @@ for (const file of commandFiles) {
 	const command = require(filePath);
 	bot.commands.set(command.data.name, command);
 }
+
+// create player
+const player = new Player(bot, {
+	leaveOnEmpty: false,
+});
+bot.player = player;
+
+//// player events // lint later
+// print display
+const print_display = require("./loose_functions/print_display.js");
+bot.player.on("songChanged", (queue, newSong) =>
+print_display.execute(queue, newSong));
+bot.player.on("songFirst", (queue, song) =>
+print_display.execute(queue, song))
 
 // log in
 bot.login(botToken);

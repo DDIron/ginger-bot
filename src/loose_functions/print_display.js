@@ -1,37 +1,25 @@
 const { getBasicInfo } = require("ytdl-core");
 
 module.exports = {
-    async execute(interaction, youtubeLink = null) {
-
-        let downloadInfo
-        let videoLength
-        if (youtubeLink) {
+    async execute(queue, song = null) {
+        if (song) {
             // WITH LINK
-            try {
-                downloadInfo = await getBasicInfo(youtubeLink);
-                videoLength = new Date(downloadInfo.videoDetails.lengthSeconds * 1000).toISOString().substring(11, 19);
-
-            } catch (e) {
-                // error: misc
-                return await interaction.editReply(`❌ **Couldn't print a display**\n${e}`);
-            }
-
             messageContent = "";
             embedDisplay = [
                 {
                     title: `🍪 Next up:`,
-                    description: downloadInfo.videoDetails.title,
+                    description: song.name,
                     color: 0xe44424,
                     fields: [
                     {
                         name: `Timestamp:`,
-                        value: `00:00:00 - ${videoLength}`
+                        value: `00:00:00 - ${song.duration}`
                     }
                     ],
                     thumbnail: {
-                        url: downloadInfo.videoDetails.thumbnails[0].url,
+                        url: song.thumbnail,
                     },
-                    url: downloadInfo.videoDetails.url
+                    url: song.url
                 }
             ];
         } else {
@@ -40,7 +28,7 @@ module.exports = {
             embedDisplay = []
         }
 
-        const interactionChannel = await interaction.client.channels.fetch(interaction.channelId)
+        const interactionChannel = song.queue.connection.channel
         interactionChannel.send({
             content: messageContent,
             embeds: embedDisplay,

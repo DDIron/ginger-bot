@@ -1,9 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
-
-const ytdl = require("ytdl-core");
 const ytSearch = require("yt-search");
-const fs = require("fs");
-const { Player } = require("discord-music-player")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -15,7 +11,7 @@ module.exports = {
 			.setRequired(true)),
 	async execute(interaction) {
 
-		const bot = interaction.client
+		const player = interaction.client.player;
 		const currentVc = interaction.member.voice.channel;
 
 		// check for current VC
@@ -61,25 +57,20 @@ module.exports = {
 			return await interaction.editReply(`❌ **Error**\n${e.message}`);
 		};
 
-		// queue track
-		const play_track = require("../loose_functions/play_track.js");
-		const player = new Player(bot, {
-			leaveOnEmpty: false,
-		});
-		bot.player = player;
-
-		let queue = bot.player.createQueue(interaction.guildId);
+		// create player
+		let queue = player.getQueue(interaction.guildId);
+        if (!queue) {
+            queue = player.createQueue(interaction.guildId);
+        }
 		await queue.join(currentVc);
 
+		// queue track
 		try {
-			await play_track.execute(interaction, queue, youtubeLink);
+			await queue.play(youtubeLink);
 		} catch (e) {
 			// error: 410
-			return await interaction.editReply({
-				content: "❌ **Error**\nNo video found. Your video might be restricted.",
-				ephemeral: true
-			});
+			return await interaction.editReply("❌ **Error**\nNo video found. Your video might be restricted.");
 		}
-		await interaction.editReply("✅ Playing track...")
+		await interaction.editReply(`✅ Added ${youtubeLink} to the queue.`);
 	},
 };

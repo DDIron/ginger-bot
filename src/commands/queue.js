@@ -1,7 +1,4 @@
 const { SlashCommandBuilder } = require("discord.js");
-const ytSearch = require("yt-search");
-const ytpl = require("ytpl");
-const fs = require("fs");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,11 +7,9 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		let guildQueue
-		try {
-			guildQueue = interaction.client.player.getQueue(interaction.guildId);
-		} catch (e) {
-			return await interaction.editReply("❌ I'm not currently active.");
+		let guildQueue = interaction.client.player.getQueue(interaction.guildId);
+		if (!guildQueue) {
+			return await interaction.editReply("❌ There is no ongoing queue.");
 		}
 
 		if (guildQueue.songs.length > 10) {
