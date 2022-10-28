@@ -37,7 +37,6 @@ module.exports = {
 			if (searchString.startsWith("https://www.youtube.com/playlist?list=")) {
 				//// PLAYLIST
 				const playlist = searchString;
-				
 				// create queue
 				let queue = player.getQueue(interaction.guildId);
 				if (!queue) {
@@ -50,7 +49,8 @@ module.exports = {
 					await queue.playlist(playlist);
 				} catch (e) {
 					// error: 410
-					return await interaction.editReply("❌ **Error**\nNo playlist found. Is it private or restricted?");
+					console.log(e)
+					return await interaction.editReply("❌ **Error**\nNo playlist found. One or more of the videos are restricted.");
 				}
 				return await interaction.editReply(`✅ Added playlist ${playlist} to the queue.`);
 			} else if (searchString.includes("youtube.com")) {
