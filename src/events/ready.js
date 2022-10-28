@@ -4,10 +4,17 @@ module.exports = {
 	name: "ready",
 	once: true,
 	execute(bot) {
+
 		console.log(`## Ready! Logged in as ${bot.user.tag}`);
         // Set bot status:
 	    bot.user.setActivity("/help || Now with more!", {
 			type: ActivityType.Listening,
 		});
+		
+		// list servers
+		console.log("~ Servers:")
+		bot.guilds.cache.forEach(guild => {
+			console.log(`-- ${guild.name} || ${guild.id}`);
+		})
 	},
 };
