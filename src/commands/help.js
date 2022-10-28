@@ -10,7 +10,7 @@ module.exports = {
 			embeds: [{
 				type: "rich",
 				title: `🍪 Command Guide`,
-				description: "Ginger v3.0.0",
+				description: "Ginger v3.0.2",
 				color: 0xe44424,
 				fields: [{
 						name: `/help`,
@@ -32,10 +32,6 @@ module.exports = {
 						name: `/lyrics`,
 						value: `- Retrieve the lyrics of a specified song`
 					},
-					{
-						name: `/display`,
-						value: `- Display the play panel`
-					}
 				],
 				footer: {
 					text: "Thank you for using Ginger! If you have any suggestions or bug reports, you can send it using /feedback :)"

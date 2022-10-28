@@ -34,17 +34,30 @@ module.exports = {
 		interaction.deferReply();
 		let youtubeLink;
 		try {
-			if (searchString.includes("youtube.com")) {
+			if (searchString.startsWith("https://www.youtube.com/playlist?list=")) {
+				//// PLAYLIST
+				const playlist = searchString;
+				
+				// create queue
+				let queue = player.getQueue(interaction.guildId);
+				if (!queue) {
+					queue = player.createQueue(interaction.guildId);
+				}
+				await queue.join(currentVc);
+
+				// add track to queue
+				try {
+					await queue.playlist(playlist);
+				} catch (e) {
+					// error: 410
+					return await interaction.editReply("❌ **Error**\nNo playlist found. Is it private or restricted?");
+				}
+				return await interaction.editReply(`✅ Added playlist ${playlist} to the queue.`);
+			} else if (searchString.includes("youtube.com")) {
 				//// DIRECT VIDEO
 				youtubeLink = searchString;
-			} else if (searchString.startsWith("https://www.youtube.com/playlist?list=")) {
-				//// PLAYLIST
-				const playlist = await ytpl(commandString.split(`https://www.youtube.com/playlist?list=`).pop())
-				
-				
 			} else {
 				//// SEARCH QUERY
-
 				results = await ytSearch(searchString);
 				if (!results?.all?.length) {
 					// error: no result
@@ -57,14 +70,14 @@ module.exports = {
 			return await interaction.editReply(`❌ **Error**\n${e.message}`);
 		};
 
-		// create player
+		// create queue
 		let queue = player.getQueue(interaction.guildId);
         if (!queue) {
             queue = player.createQueue(interaction.guildId);
         }
 		await queue.join(currentVc);
 
-		// queue track
+		// add track to queue
 		try {
 			await queue.play(youtubeLink);
 		} catch (e) {

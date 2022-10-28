@@ -22,7 +22,7 @@ module.exports = {
 				color: 0xe44424,
 				fields: [
 					{
-					name: `Ginger v3.0.0`,
+					name: `Ginger v3.0.2`,
 					value: `${message}`
 					},
 				],
