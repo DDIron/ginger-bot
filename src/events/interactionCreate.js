@@ -8,7 +8,6 @@ module.exports = {
             try {
                 buttonFunctions.execute(interaction);
             } catch(e) {
-                console.error(e);
                 interaction.reply({
                     content: "There was an error while executing this function.",
                     ephemeral: true
@@ -24,8 +23,6 @@ module.exports = {
         try {
             command.execute(interaction);
         } catch (e) {
-            console.log("## Caught an error!")
-            console.error(e);
             interaction.reply({
                 content: "There was an error while executing this command.",
                 ephemeral: true

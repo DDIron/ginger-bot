@@ -5,12 +5,17 @@ module.exports = {
 		.setName("queue")
 		.setDescription("Displays the queue."),
 	async execute(interaction) {
-		await interaction.deferReply();
+		
 
 		let guildQueue = interaction.client.player.getQueue(interaction.guildId);
 		if (!guildQueue) {
-			return await interaction.editReply("❌ There is no ongoing queue.");
+			return await interaction.reply({
+				content: "❌ There is no ongoing queue.",
+				ephemeral: true
+			});
 		}
+
+		await interaction.deferReply();
 
 		if (guildQueue.songs.length > 10) {
 			interaction.editReply({
