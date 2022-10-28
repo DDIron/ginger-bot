@@ -33,6 +33,7 @@ module.exports = {
 		// attempt to retrieve video
 		interaction.deferReply();
 		let youtubeLink;
+		let trackTitle = searchString;
 		try {
 			if (searchString.startsWith("https://www.youtube.com/playlist?list=")) {
 				//// PLAYLIST
@@ -52,7 +53,7 @@ module.exports = {
 					console.log(e)
 					return await interaction.editReply("❌ **Error**\nNo playlist found. One or more of the videos are restricted.");
 				}
-				return await interaction.editReply(`✅ Added playlist ${playlist} to the queue.`);
+				return await interaction.editReply(`✅ Added playlist ${trackTitle} to the queue.`);
 			} else if (searchString.includes("youtube.com")) {
 				//// DIRECT VIDEO
 				youtubeLink = searchString;
@@ -64,6 +65,7 @@ module.exports = {
 					return await interaction.editReply("❌ **Error**\nNo results found. Try using a direct youtube url.");
 				}
 				youtubeLink = results.all[0].url;
+				trackTitle = results.all[0].title;
 			}
 		} catch (e) {
 			// error: misc
@@ -84,6 +86,6 @@ module.exports = {
 			// error: 410
 			return await interaction.editReply("❌ **Error**\nNo video found. Your video might be restricted.");
 		}
-		await interaction.editReply(`✅ Added ${youtubeLink} to the queue.`);
+		await interaction.editReply(`✅ Added ${trackTitle} to the queue.`);
 	},
 };
