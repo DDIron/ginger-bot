@@ -31,7 +31,7 @@ module.exports = {
 		};
 
 		// attempt to retrieve video
-		interaction.deferReply();
+		await interaction.deferReply();
 		let youtubeLink;
 		let trackTitle = searchString;
 		try {
