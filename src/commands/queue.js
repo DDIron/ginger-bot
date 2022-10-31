@@ -25,7 +25,7 @@ module.exports = {
 					description: `- ${guildQueue.songs.slice(1, 10).join(`\n- `)}`,
 					color: 0xe44424,
 					footer: {
-						text: `+${currentQueue.length - 10} more rows...`
+						text: `+${guildQueue.length - 10} more rows...`
 					}
 				}]
 			});
