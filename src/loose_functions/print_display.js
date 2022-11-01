@@ -1,9 +1,12 @@
 const { getBasicInfo } = require("ytdl-core");
 
 module.exports = {
-    async execute(queue, song = null) {
+    async execute(queue, song = null, interaction = null) {
+        let interactionChannel;
         if (song) {
             // WITH LINK
+            interactionChannel = song.queue.connection.channel
+
             messageContent = "";
             embedDisplay = [
                 {
@@ -24,11 +27,11 @@ module.exports = {
             ];
         } else {
             // WITHOUT LINK
-            messageContent = "✅ Printing display..."
+            messageContent = "✅ Couldn't find a current song. Printing anyway..."
             embedDisplay = []
+            interactionChannel = interaction.channel
         }
 
-        const interactionChannel = song.queue.connection.channel
         interactionChannel.send({
             content: messageContent,
             embeds: embedDisplay,
