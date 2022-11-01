@@ -12,9 +12,9 @@ module.exports = {
 		});
 		
 		// list servers
-		console.log("~ Servers:")
+		console.log("~ Servers:");
 		bot.guilds.cache.forEach(guild => {
 			console.log(`-- ${guild.name} || ${guild.id}`);
-		})
+		});
 	},
 };

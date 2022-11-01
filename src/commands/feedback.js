@@ -10,7 +10,7 @@ module.exports = {
 			.setRequired(true)),
 	execute(interaction) {
 		const message = interaction.options.getString("message");
-		const turkey = interaction.client.users.send(
+		interaction.client.users.send(
 			"741228198850854949",
 		{
 			content: "",

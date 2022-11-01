@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
 const lyricsFinder = require("lyrics-finder");
+// find a better node module for this
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -13,16 +14,16 @@ module.exports = {
 			.setName("song")
 			.setDescription("The song to retrieve lyrics for.")
 			.setRequired(true)),
-	async execute(interaction) {
+	execute(interaction) {
 		interaction.deferReply();
 
 		const artist = interaction.options.getString("artist");
 		const title = interaction.options.getString("song");
-		const song_lyrics = await lyricsFinder(artist, title);
+		const song_lyrics = lyricsFinder(artist, title);
 
 		if (song_lyrics) {
 			// reply with lyrics
-			await interaction.editReply({
+			interaction.editReply({
 				content: "",
 				embeds: [{
 					type: "rich",
@@ -33,8 +34,7 @@ module.exports = {
 			});
 		} else {
 			// error: lyrics unavailable
-			await interaction.editReply("❌ **Error** \nThis song does not have any available lyrics.");
-			return;
+			return interaction.editReply("❌ **Error** \nThis song does not have any available lyrics.");
 		}
 	},
 };
