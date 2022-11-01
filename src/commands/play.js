@@ -35,9 +35,11 @@ module.exports = {
 		let youtubeLink;
 		let trackTitle = searchString;
 		try {
-			if (searchString.startsWith("https://www.youtube.com/playlist?list=")) {
+			if (searchString.includes("youtube.com/playlist")) {
 				//// PLAYLIST
+				// needs a seperate logic for playlists
 				const playlist = searchString;
+
 				// create queue
 				let queue = player.getQueue(interaction.guildId);
 				if (!queue) {
@@ -50,13 +52,15 @@ module.exports = {
 					await queue.playlist(playlist);
 				} catch (e) {
 					// error: 410
-					console.log(e)
-					return await interaction.editReply("❌ **Error**\nNo playlist found. One or more of the videos are restricted.");
+					console.log(e);
+					return await interaction.editReply("❌ **Error**\nNo valid playlist found. One or more of the videos may be restricted.");
 				}
 				return await interaction.editReply(`✅ Added playlist ${trackTitle} to the queue.`);
+
 			} else if (searchString.includes("youtube.com")) {
 				//// DIRECT VIDEO
 				youtubeLink = searchString;
+
 			} else {
 				//// SEARCH QUERY
 				results = await ytSearch(searchString);
