@@ -10,19 +10,27 @@ module.exports = {
 			embeds: [{
 				type: "rich",
 				title: `🍪 Command Guide`,
-				description: "Ginger v3.0.2",
+				description: "Ginger v3.1.0",
 				color: 0xe44424,
 				fields: [{
 						name: `/help`,
 						value: `- Displays this message`
 					},
 					{
-						name: `/queue`,
-						value: `- Display the track queue`
-					},
-					{
 						name: `/play`,
 						value: `- Queue a track or playlist via Youtube search or url`
+					},
+					{
+						name: `/display`,
+						value: `- Display the currently playing track and play panel.`
+					},
+					{
+						name: `/seek`,
+						value: `- Skip forwards or backwards in the current track`
+					},
+					{
+						name: `/queue`,
+						value: `- Display the track queue`
 					},
 					{
 						name: `/remove`,

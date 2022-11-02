@@ -1,22 +1,33 @@
-const { getBasicInfo } = require("ytdl-core");
+const { SlashCommandBuilder } = require("discord.js");
 
 module.exports = {
-    async execute(queue, song = null) {
-        if (!song) {
-            return;
-        }
+	data: new SlashCommandBuilder()
+		.setName("display")
+		.setDescription("Display the currently playing track."),
+	execute(interaction) {
+        // if queue exists, get queue info
+        let guildQueue = interaction.client.player.getQueue(interaction.guildId);
+		if (!guildQueue) {
+			return interaction.reply({
+				content: "❌ There is no song currently playing.",
+				ephemeral: true
+			});
+		}
+		progressBar = guildQueue.createProgressBar().times;
+        timestampTimes = progressBar.split("/");
+		song = guildQueue.nowPlaying;
 
-        song.queue.connection.channel.send({
-            content: "",
+		interaction.reply({
+            content: "✅ Printing display...",
             embeds: [
                 {
-                    title: `🍪 Next up:`,
+                    title: `🍪 Currently playing:`,
                     description: song.name,
                     color: 0xe44424,
                     fields: [
                     {
                         name: `Timestamp:`,
-                        value: `00:00:00 - ${song.duration}`
+                        value: `${timestampTimes[0]} - ${song.duration}`
                     }
                     ],
                     thumbnail: {
@@ -77,5 +88,5 @@ module.exports = {
             }
             ],
         });
-    }
-}
+	}
+};

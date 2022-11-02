@@ -9,7 +9,7 @@ module.exports = {
                 buttonFunctions.execute(interaction);
             } catch(e) {
                 interaction.reply({
-                    content: "There was an error while executing this function.",
+                    content: "There was an error while executing this function. Please try again.",
                     ephemeral: true
                 });
             }
@@ -24,7 +24,7 @@ module.exports = {
             command.execute(interaction);
         } catch (e) {
             interaction.reply({
-                content: "There was an error while executing this command.",
+                content: `There was an error while executing this command. Please try again.\nError: ${e.message}`,
                 ephemeral: true
             });
         }
