@@ -17,9 +17,9 @@ module.exports = {
 	async execute(interaction) {
 		await interaction.deferReply();
 
-		const artist = interaction.options.getString("artist");
-		const title = interaction.options.getString("song");
-		const song_lyrics = lyricsFinder(artist, title);
+		const artist = await interaction.options.getString("artist");
+		const title = await interaction.options.getString("song");
+		const song_lyrics = await lyricsFinder(artist, title);
 
 		if (song_lyrics) {
 			// reply with lyrics
