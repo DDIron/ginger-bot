@@ -14,8 +14,8 @@ module.exports = {
 			.setName("song")
 			.setDescription("The song to retrieve lyrics for.")
 			.setRequired(true)),
-	execute(interaction) {
-		interaction.deferReply();
+	async execute(interaction) {
+		await interaction.deferReply();
 
 		const artist = interaction.options.getString("artist");
 		const title = interaction.options.getString("song");
@@ -23,7 +23,7 @@ module.exports = {
 
 		if (song_lyrics) {
 			// reply with lyrics
-			interaction.editReply({
+			await interaction.editReply({
 				content: "",
 				embeds: [{
 					type: "rich",

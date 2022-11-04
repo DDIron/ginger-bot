@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, CategoryChannel } = require("discord.js");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -28,13 +28,20 @@ module.exports = {
 			inputSeconds = (+x[0]) * 60 * 60 + (+x[1]) * 60 + (+x[2]);
 		} catch (e) {
 			return interaction.reply({
-				content: `❌ **Error** \nInvalid input. Use the format hh:mm:ss.`,
+				content: "❌ **Error** \nInvalid input. Use the format hh:mm:ss.",
 				ephemeral: true
 			});
 		}
 
         // seek
-        guildQueue.seek(inputSeconds * 1000);
+		try {
+        	guildQueue.seek(inputSeconds * 1000);
+		} catch (e) {
+			return interaction.reply({
+				content: `❌ **Error** \n${e}`,
+				ephemeral: true
+			});
+		}
         interaction.reply(`✅ Skipping to ${input}...`)
 	}
 };
