@@ -19,7 +19,8 @@ module.exports = {
 
 		const artist = await interaction.options.getString("artist");
 		const title = await interaction.options.getString("song");
-		const song_lyrics = await lyricsFinder(artist, title);
+
+		let song_lyrics = await lyricsFinder(artist, title) || false;
 
 		if (song_lyrics) {
 			// reply with lyrics
