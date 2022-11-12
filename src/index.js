@@ -45,6 +45,10 @@ bot.player.on("songChanged", (queue, newSong) =>
 print_display.execute(queue, newSong));
 bot.player.on("songFirst", (queue, song) =>
 print_display.execute(queue, song))
+bot.player.on("queueEnd", (queue) =>
+bot.channels.cache.get(queue.connection.channel.id).send("Disconnected from voice channel."))
+bot.player.on("error", (error, queue) =>
+console.log(`Error: ${error}`))
 
 // log in
 bot.login(botToken);
