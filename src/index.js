@@ -34,21 +34,22 @@ for (const file of commandFiles) {
 
 // create player
 const player = new Player(bot, {
-	leaveOnEmpty: false,
+	leaveOnEmpty: true,
 });
 bot.player = player;
 
 //// player events // lint later
 // print display
 const print_display = require("./loose_functions/print_display.js");
-bot.player.on("songChanged", (queue, newSong) =>
-print_display.execute(queue, newSong));
-bot.player.on("songFirst", (queue, song) =>
-print_display.execute(queue, song))
-bot.player.on("queueEnd", (queue) =>
-bot.channels.cache.get(queue.connection.channel.id).send("Disconnected from voice channel."))
-bot.player.on("error", (error, queue) =>
-console.log(`Error: ${error}`))
+bot.player
+	.on("songChanged", (queue, newSong) =>
+		print_display.execute(queue, newSong))
+	.on("songFirst", (queue, song) =>
+		print_display.execute(queue, song))
+	.on("queueEnd", (queue) =>
+		bot.channels.cache.get(queue.connection.channel.id).send("Disconnected from voice channel."))
+	.on("channelEmpty", (queue) =>
+		bot.channels.cache.get(queue.connection.channel.id).send(`<:gingerNeutral:1043991232281575554> I don't like to be alone, so I left the voice channel.`))
 
 // log in
 bot.login(botToken);
