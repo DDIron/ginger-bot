@@ -1,7 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const { Client, Collection, GatewayIntentBits, } = require("discord.js");
-const { botToken } = require("./config.json");
+// const { botToken } = require("./config.json");
 const { Player } = require("discord-music-player");
 
 // put receiving endpoints in here:
