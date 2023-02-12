@@ -33,7 +33,6 @@ module.exports = {
                     style: 1,
                     label: `Pause/Play`,
                     custom_id: `buttonPause`,
-                    disabled: false,
                     emoji: {
                     id: null,
                     name: `⏸`
@@ -44,7 +43,6 @@ module.exports = {
                     style: 2,
                     label: `Loop`,
                     custom_id: `buttonLoop`,
-                    disabled: false,
                     emoji: {
                     id: null,
                     name: `🔁`
@@ -55,7 +53,6 @@ module.exports = {
                     style: 2,
                     label: `Skip`,
                     custom_id: `buttonSkip`,
-                    disabled: false,
                     emoji: {
                     id: null,
                     name: `⏩`
@@ -66,16 +63,13 @@ module.exports = {
                     style: 4,
                     label: `Stop`,
                     custom_id: `buttonStop`,
-                    disabled: false,
                     emoji: {
                     id: null,
                     name: `🛑`
                     },
                     type: 2
-                }
-                ]
-            }
-            ],
+                }]
+            }],
         });
     }
 }

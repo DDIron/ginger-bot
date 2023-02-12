@@ -8,27 +8,27 @@ module.exports = {
 			.setName("id")
 			.setDescription("The index of the song to remove.")
 			.setRequired(true)),
-	async execute(interaction) {
+	execute(interaction) {
 		const input = interaction.options.getInteger("id");
 		try {
             guildQueue = interaction.client.player.getQueue(interaction.guildId);
         } catch (e) {
 			// error: no queue
-			return await interaction.reply({
+			return interaction.reply({
 				content: `❌ **Error**\nThere is no queue in this server.`,
 				ephemeral: true
 			})
         }
 
-		interaction.reply(`✅ Removing ${guildQueue.songs[input - 1]} from the queue.`);
 		try {
 			guildQueue.remove(input - 1)
-		} catch {
+		} catch (e) {
 			// error: invalid input
-			return await interaction.editReply({
+			return interaction.reply({
 				content: `❌ **Error** \nPlease enter a number from 1-${guildQueue.length}`,
 				ephemeral: true
 			});
 		}
+		interaction.reply(`Removed ${guildQueue.songs[input - 1]} from the queue.`);
 	},
 };

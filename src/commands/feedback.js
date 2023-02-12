@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const { botVersion } = require("../config.json");
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -6,7 +7,7 @@ module.exports = {
 		.setDescription("Send bug reports or feedback!")
 		.addStringOption(option => option
 			.setName("message")
-			.setDescription("The message you wish to send")
+			.setDescription("Please report bugs with the error message you were given.")
 			.setRequired(true)),
 	execute(interaction) {
 		const message = interaction.options.getString("message");
@@ -22,7 +23,7 @@ module.exports = {
 				color: 0xe44424,
 				fields: [
 					{
-					name: `Ginger v3.1.2`,
+					name: `Ginger v${botVersion}`,
 					value: `${message}`
 					},
 				],

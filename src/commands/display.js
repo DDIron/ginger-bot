@@ -18,7 +18,7 @@ module.exports = {
 		song = guildQueue.nowPlaying;
 
 		interaction.reply({
-            content: "✅ Printing display...",
+            content: "Printing display...",
             embeds: [
                 {
                     title: `🍪 Currently playing:`,
@@ -83,10 +83,8 @@ module.exports = {
                     name: `🛑`
                     },
                     type: 2
-                }
-                ]
-            }
-            ],
+                }]
+            }],
         });
 	}
 };

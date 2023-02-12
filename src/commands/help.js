@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const { botVersion } = require("../config.json")
 
 module.exports = {
 	data: new SlashCommandBuilder()
@@ -10,7 +11,7 @@ module.exports = {
 			embeds: [{
 				type: "rich",
 				title: `🍪 Command Guide`,
-				description: "Ginger v3.1.0",
+				description: `Ginger v${botVersion}`,
 				color: 0xe44424,
 				fields: [{
 						name: `/help`,

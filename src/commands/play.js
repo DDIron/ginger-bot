@@ -12,69 +12,69 @@ module.exports = {
 	async execute(interaction) {
 
 		const player = interaction.client.player;
-		const currentVc = interaction.member.voice.channel;
+		const currentVc = interaction.member.voice.channel || false;
 
 		// check for current VC
 		if (!currentVc) {
-			return await interaction.reply({
+			return interaction.reply({
 				content: "Please rejoin your voice channel before using this command!",
 				ephemeral: true
 			});
-		};
+		}
 		
 		// get searchstring
-		let searchString;
-		try {
-			searchString = interaction.options.getString("input");
-		} catch (e) {
-		 	searchString = null
-		};
+		const searchString = interaction.options.getString("input") || false;
+		if (!searchString) {
+			return interaction.reply({
+				content: "❌ **Error**\nFalsy input was provided.",
+				ephemeral: true
+			});
+		}
+		let trackTitle = searchString;
 
 		// attempt to retrieve video
 		await interaction.deferReply();
-		let youtubeLink;
-		let trackTitle = searchString;
-		try {
-			if (searchString.includes("youtube.com/playlist")) {
-				//// PLAYLIST
-				// needs a seperate logic for playlists
-				const playlist = searchString;
 
-				// create queue
-				let queue = player.getQueue(interaction.guildId);
-				if (!queue) {
-					queue = player.createQueue(interaction.guildId);
-				}
-				await queue.join(currentVc);
+		if (searchString.includes("youtube.com/playlist")) {
+			////////////
+			// PLAYLIST
+			////////////
 
-				// add track to queue
-				try {
-					await queue.playlist(playlist);
-				} catch (e) {
-					// error: 410
-					console.log(e);
-					return await interaction.editReply("❌ **Error**\nNo valid playlist found. One or more of the videos may be restricted.");
-				}
-				return await interaction.editReply(`✅ Added playlist ${trackTitle} to the queue.`);
+			// create queue
+			let queue = player.getQueue(interaction.guildId);
+			if (!queue) { queue = player.createQueue(interaction.guildId) };
+			queue.join(currentVc);
 
-			} else if (searchString.includes("youtube.com")) {
-				//// DIRECT VIDEO
-				youtubeLink = searchString;
-
-			} else {
-				//// SEARCH QUERY
-				results = await ytSearch(searchString);
-				if (!results?.all?.length) {
-					// error: no result
-					return await interaction.editReply("❌ **Error**\nNo results found. Try using a direct youtube url.");
-				}
-				youtubeLink = results.all[0].url;
-				trackTitle = results.all[0].title;
+			// add track to queue
+			try {
+				await queue.playlist(searchString);
+			} catch (e) {
+				// error: 410
+				console.log(e);
+				return interaction.editReply("❌ **Error**\nNo valid playlist found. One or more of the videos may be restricted.");
 			}
-		} catch (e) {
-			// error: misc
-			return await interaction.editReply(`❌ **Error**\n${e.message}`);
-		};
+			return interaction.editReply(`✅ Added playlist to the queue.`);
+		}
+		
+		// Single Video
+		let youtubeLink;
+		if (searchString.includes("youtube.com")) {
+			////////////
+			//// DIRECT VIDEO
+			////////////
+			youtubeLink = searchString;
+		} else {
+			////////////
+			//// SEARCH QUERY
+			///////////
+			results = await ytSearch(searchString);
+			if (!results?.all?.length) {
+				// error: no result
+				return interaction.editReply("❌ **Error**\nNo results found. Try using a direct youtube url.");
+			}
+			youtubeLink = results.all[0].url;
+			trackTitle = results.all[0].title;
+		}
 
 		// create queue
 		let queue = player.getQueue(interaction.guildId);
@@ -85,11 +85,11 @@ module.exports = {
 
 		// add track to queue
 		try {
-			await queue.play(youtubeLink);
+			queue.play(youtubeLink);
 		} catch (e) {
 			// error: 410
-			return await interaction.editReply("❌ **Error**\nNo video found. Your video might be restricted.");
+			return interaction.editReply("❌ **Error**\nNo video found. Your video might be restricted.");
 		}
-		await interaction.editReply(`✅ Added ${trackTitle} to the queue.`);
-	},
+		interaction.editReply(`✅ Added ${trackTitle} to the queue.`);
+	}
 };

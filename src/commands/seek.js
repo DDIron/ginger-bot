@@ -42,6 +42,6 @@ module.exports = {
 				ephemeral: true
 			});
 		}
-        interaction.reply(`✅ Skipping to ${input}...`)
+        interaction.reply(`Skipping to ${input}...`)
 	}
 };

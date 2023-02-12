@@ -7,9 +7,9 @@ module.exports = {
 	async execute(interaction) {
 		
 		// get queue
-		let guildQueue = interaction.client.player.getQueue(interaction.guildId);
+		let guildQueue = await interaction.client.player.getQueue(interaction.guildId);
 		if (!guildQueue) {
-			return await interaction.reply({
+			return interaction.reply({
 				content: "❌ There is no ongoing queue.",
 				ephemeral: true
 			});
@@ -18,27 +18,18 @@ module.exports = {
 		await interaction.deferReply();
 
 		// list queue
+		let footer_text
 		if (guildQueue.songs.length > 10) {
-			interaction.editReply({
-				content: "",
-				embeds: [{
-					title: `🍪 Current playlist:`,
-					description: `- ${guildQueue.songs.slice(1, 10).join(`\n- `)}`,
-					color: 0xe44424,
-					footer: {
-						text: `+${guildQueue.length - 10} more rows...`
-					}
-				}]
-			});
-		} else {
-			interaction.editReply({
-				content: "",
-				embeds: [{
-					title: `🍪 Current playlist:`,
-					description: `- ${guildQueue.songs.join(`\n- `)}`,
-					color: 0xe44424,
-				}]
-			});
+			footer_text = { text: `+${guildQueue.length - 10} more tracks...`}
 		}
+		interaction.editReply({
+			content: "",
+			embeds: [{
+				title: `🍪 Current queue:`,
+				description: `- ${guildQueue.songs.slice(1, 10).join(`\n- `)}`,
+				color: 0xe44424,
+				footer: footer_text
+			}]
+		});
 	},
 };

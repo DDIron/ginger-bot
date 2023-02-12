@@ -16,12 +16,14 @@ for (const file of commandFiles) {
 
 const rest = new REST({ version: "10" }).setToken(botToken);
 
+// register all commands
+//
 rest.put(Routes.applicationCommands(botId), { body: commands })
 	.then(() => console.log("Successfully registered global commands."))
 	.catch(console.error);
 
 // delete all commands
 //
-// rest.put(Routes.applicationGuildCommands(botId, guildId), { body: [] })
+// rest.put(Routes.applicationGuildCommands(botId), { body: [] })
 // .then(() => console.log("Successfully deleted all application commands."))
 // .catch(console.error);

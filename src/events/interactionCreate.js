@@ -6,7 +6,7 @@ module.exports = {
         if (interaction.isButton()) {
             const buttonFunctions = require("../loose_functions/buttons.js");
             try {
-                buttonFunctions.execute(interaction);
+                return buttonFunctions.execute(interaction);
             } catch(e) {
                 interaction.reply({
                     content: "There was an error while executing this function. Please try again.",
@@ -16,10 +16,10 @@ module.exports = {
         }
 
         // SLASH COMMAND
-		if (!interaction.isChatInputCommand()) return;
+		if (!interaction.isChatInputCommand() || !interaction.guild) return;
         const command = interaction.client.commands.get(interaction.commandName);
-        
         if (!command) return;
+        
         try {
             command.execute(interaction);
         } catch (e) {
