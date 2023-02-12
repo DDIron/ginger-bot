@@ -5,7 +5,7 @@ module.exports = {
 	data: new SlashCommandBuilder()
 		.setName("help")
 		.setDescription("Retrieve a list of available commands."),
-	execute(interaction) {
+	async execute(interaction) {
 		interaction.reply({
 			content: "",
 			embeds: [{
@@ -48,4 +48,4 @@ module.exports = {
 			}]
 		});
 	},
-};
+}

@@ -37,6 +37,6 @@ module.exports = {
 		interaction.reply({
 			content: "Feedback has been sent!",
 			ephemeral: true
-		})
+		});
 	},
-};
+}

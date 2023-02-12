@@ -1,10 +1,10 @@
 module.exports = {
 	name: "interactionCreate",
-	execute(interaction) {
+	async execute(interaction) {
 
         // BUTTON PRESS
         if (interaction.isButton()) {
-            const buttonFunctions = require("../loose_functions/buttons.js");
+            const buttonFunctions = require("../modules/buttons.js");
             try {
                 return buttonFunctions.execute(interaction);
             } catch(e) {

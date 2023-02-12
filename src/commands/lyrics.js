@@ -15,8 +15,8 @@ module.exports = {
 		const input = await interaction.options.getString("song")
 		
 		const title = await solenolyrics.requestTitleFor(input) || false;
-		const song_lyrics = await solenolyrics.requestLyricsFor(title)
-		const song_writer = await solenolyrics.requestAuthorFor(title)
+		const songLyrics = await solenolyrics.requestLyricsFor(title)
+		const songWriter = await solenolyrics.requestAuthorFor(title)
 
 		if (!title) {
 			// error: lyrics unavailable
@@ -28,10 +28,10 @@ module.exports = {
 			content: "",
 			embeds: [{
 				type: "rich",
-				title: `🍪 ${song_writer} || ${title}`,
-				description: `${song_lyrics}`,
+				title: `🍪 ${songWriter} || ${title}`,
+				description: `${songLyrics}`,
 				color: 0xe44424,
 			}]
 		});
 	},
-};
+}

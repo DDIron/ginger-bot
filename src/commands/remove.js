@@ -17,11 +17,12 @@ module.exports = {
 			return interaction.reply({
 				content: `❌ **Error**\nThere is no queue in this server.`,
 				ephemeral: true
-			})
+			});
         }
 
 		try {
-			guildQueue.remove(input - 1)
+			if (input < 1) throw "Invalid Input";
+			guildQueue.remove(input - 1);
 		} catch (e) {
 			// error: invalid input
 			return interaction.reply({

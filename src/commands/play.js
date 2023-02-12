@@ -92,4 +92,4 @@ module.exports = {
 		}
 		interaction.editReply(`✅ Added ${trackTitle} to the queue.`);
 	}
-};
+}

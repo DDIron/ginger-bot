@@ -15,7 +15,7 @@ module.exports = {
             } else {
                 // RESUME
                 guildQueue.setPaused(false);
-                channel.send("Resuming the track...")
+                channel.send("Resuming the track...");
             }
             
         } else if (interaction.customId == "buttonLoop") {
@@ -31,7 +31,7 @@ module.exports = {
             
         } else if (interaction.customId == "buttonSkip") {
             // SKIP
-            guildQueue.skip()
+            guildQueue.skip();
             channel.send("Skipping the current track...");
         } else if (interaction.customId == "buttonStop") {
             // STOP

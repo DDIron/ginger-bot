@@ -18,9 +18,9 @@ module.exports = {
 		await interaction.deferReply();
 
 		// list queue
-		let footer_text
+		let footerText
 		if (guildQueue.songs.length > 10) {
-			footer_text = { text: `+${guildQueue.length - 10} more tracks...`}
+			footerText = { text: `+${guildQueue.length - 10} more tracks...`}
 		}
 		interaction.editReply({
 			content: "",
@@ -28,8 +28,8 @@ module.exports = {
 				title: `🍪 Current queue:`,
 				description: `- ${guildQueue.songs.slice(1, 10).join(`\n- `)}`,
 				color: 0xe44424,
-				footer: footer_text
+				footer: footerText
 			}]
 		});
 	},
-};
+}

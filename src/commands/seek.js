@@ -24,7 +24,7 @@ module.exports = {
 		let inputSeconds;
 		try {
 			const x = input.split(":");
-			if (x.length != 3) throw "Invalid input.";
+			if ((x.length != 3) || x.includes("-")) throw "Invalid input.";
 			inputSeconds = (+x[0]) * 60 * 60 + (+x[1]) * 60 + (+x[2]);
 		} catch (e) {
 			return interaction.reply({
@@ -42,6 +42,6 @@ module.exports = {
 				ephemeral: true
 			});
 		}
-        interaction.reply(`Skipping to ${input}...`)
+        interaction.reply(`Skipping to ${input}...`);
 	}
 };

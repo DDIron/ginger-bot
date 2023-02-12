@@ -1,7 +1,7 @@
 const { getBasicInfo } = require("ytdl-core");
 
 module.exports = {
-    async execute(queue, song = null) {
+    async execute(queue, song = false, progress = "00:00:00", title = "🍪 Next up:") {
         if (!song) {
             return;
         }
@@ -10,13 +10,13 @@ module.exports = {
             content: "",
             embeds: [
                 {
-                    title: `🍪 Next up:`,
+                    title: title,
                     description: song.name,
                     color: 0xe44424,
                     fields: [
                     {
                         name: `Timestamp:`,
-                        value: `00:00:00 - ${song.duration}`
+                        value: `${progress} - ${song.duration}`
                     }
                     ],
                     thumbnail: {
