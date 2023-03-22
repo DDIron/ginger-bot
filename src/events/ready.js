@@ -7,7 +7,7 @@ module.exports = {
 
 		console.log(`## Ready! Logged in as ${bot.user.tag}`);
         // Set bot status:
-	    bot.user.setActivity("/feedback || Hello :)", {
+	    bot.user.setActivity("/feedback || Ginger has the Real Estate.", {
 			type: ActivityType.Listening,
 		});
 		

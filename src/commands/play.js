@@ -43,7 +43,7 @@ module.exports = {
 			// create queue
 			let queue = player.getQueue(interaction.guildId);
 			if (!queue) { queue = player.createQueue(interaction.guildId) };
-			queue.join(currentVc);
+			await queue.join(currentVc);
 
 			// add track to queue
 			try {
@@ -78,9 +78,7 @@ module.exports = {
 
 		// create queue
 		let queue = player.getQueue(interaction.guildId);
-        if (!queue) {
-            queue = player.createQueue(interaction.guildId);
-        }
+        if (!queue) { queue = player.createQueue(interaction.guildId) }
 		await queue.join(currentVc);
 
 		// add track to queue
@@ -88,6 +86,7 @@ module.exports = {
 			queue.play(youtubeLink);
 		} catch (e) {
 			// error: 410
+			console.log(e);
 			return interaction.editReply("❌ **Error**\nNo video found. Your video might be restricted.");
 		}
 		interaction.editReply(`✅ Added ${trackTitle} to the queue.`);
