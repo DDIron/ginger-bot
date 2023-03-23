@@ -1,4 +1,6 @@
 {
+    "botToken": "process.env.BOT_TOKEN",
+    "botSecret": "process.env.BOT_SECRET",
     "guildId": "984642066439098398",
     "botId": "985790250704044052",
     "botVersion": "3.2.0"
