@@ -83,7 +83,7 @@ module.exports = {
 
 		// add track to queue
 		try {
-			queue.play(youtubeLink);
+			await queue.play(youtubeLink);
 		} catch (e) {
 			// error: 410
 			console.log(e);

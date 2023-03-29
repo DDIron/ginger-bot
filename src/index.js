@@ -50,7 +50,7 @@ bot.player
 	.on("channelEmpty", (queue) =>
 		bot.channels.cache.get(queue.connection.channel.id).send(`<:gingerNeutral:1043991232281575554> I don't like to be alone, so I left the voice channel.`))
 	.on("error", (error, queue) => {
-		console.log("error occured:");
+		console.log("## Error occured:");
 		console.log(e);
 	});
 
